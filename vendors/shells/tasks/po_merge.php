@@ -1,13 +1,13 @@
 <?php
 class PoMergeTask extends Shell{
 
-    var $create = null;
+    var $created = null;
     var $current = null;
 
     function execute() {
 
-        if (isset($this->params['create'])) {
-            $this->create = $this->params['create'];
+        if (isset($this->params['created'])) {
+            $this->created = $this->params['created'];
         } else {
             $response = '';
             $example = (defined('PO_CREATED')) ? PO_CREATED : 'Q';
@@ -22,7 +22,7 @@ class PoMergeTask extends Shell{
             }
 
             if (is_file($response)) {
-                $this->create = $response;
+                $this->created = $response;
             } else {
                 $this->err('The file path you supplied was not found. Please try again.');
                 $this->execute();
@@ -73,7 +73,7 @@ class PoMergeTask extends Shell{
          * created file.
          *
          */
-        $fp = fopen($this->create,"r");
+        $fp = fopen($this->created,"r");
 
         $from = array();
 
@@ -82,7 +82,7 @@ class PoMergeTask extends Shell{
         $current_comment = '';
         $msgid = '';
 
-        $this->out(sprintf(__('Processing %s...', true), $this->create));
+        $this->out(sprintf(__('Processing %s...', true), $this->created));
         if($fp){
             while(!feof($fp)) {
                 $line = preg_replace('/\n/', '', fgets($fp));
@@ -150,7 +150,7 @@ class PoMergeTask extends Shell{
             }
         }
 
-        $fp = fopen($this->create,'w');
+        $out = '';
         $header_comment = '# LANGUAGE translation of CakePHP Application
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 #
@@ -158,17 +158,17 @@ class PoMergeTask extends Shell{
 msgid ""
 msgstr ""' . "\n";
 
-        fwrite($fp, $header_comment);
-        fwrite($fp, $header);
+        $out .= $header_comment;
+        $out .= $header;
         foreach ($merged as $key => $value) {
             if (!empty($value['msgid'])) {
-                fwrite($fp,"\n");
-                fwrite($fp,$value['comments']);
-                fwrite($fp,'msgid "' . $value['msgid'] . "\"\n");
-                fwrite($fp,'msgstr "'. $value['msgstr'] . "\"\n");
+                $out .= "\n";
+                $out .= $value['comments'];
+                $out .= 'msgid "' . $value['msgid'] . "\"\n";
+                $out .= 'msgstr "'. $value['msgstr'] . "\"\n";
             }
         }
-        fclose($fp);
+        $this->createdFile($this->current, $out);
 
         $this->out('Done.');
     }
@@ -181,4 +181,3 @@ function cmp($a, $b) {
     }
     return ($a['msgid'] < $b['msgid']) ? -1 : 1;
 }
-?>

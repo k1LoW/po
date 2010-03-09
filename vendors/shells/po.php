@@ -4,7 +4,6 @@ class PoShell extends Shell {
 
     /**
      * startup
-     * startup
      *
      * @params
      * @return
@@ -14,7 +13,6 @@ class PoShell extends Shell {
     }
 
     /**
-     * main
      * main
      *
      * @params
@@ -40,5 +38,26 @@ class PoShell extends Shell {
         $this->hr();
         $this->main();
     }
+
+    /**
+     * help
+     *
+     * @params
+     * @return
+     */
+    function help() {
+        $this->out('CakePHP Po Edit:');
+        $this->hr();
+        $this->out('The Bake script generates controllers, views and models for your application.');
+        $this->hr();
+        $this->out("Usage: cake po <arg1> <arg2>...");
+        $this->hr();
+        $this->out('Params:');
+        $this->out("\t-created <path> Absolute path to created pot file.\n");
+        $this->out("\t-create <path> Absolute path to current po file (you modified).\n");
+        $this->out('Commands:');
+        $this->out("\n\tpo help\n\t\tshows this help message.");
+        $this->out("");
+
+    }
   }
-?>
