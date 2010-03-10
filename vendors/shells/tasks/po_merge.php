@@ -168,7 +168,7 @@ msgstr ""' . "\n";
                 $out .= 'msgstr "'. $value['msgstr'] . "\"\n";
             }
         }
-        $this->createdFile($this->current, $out);
+        $this->createFile($this->current, $out);
 
         $this->out('Done.');
     }
