@@ -58,7 +58,7 @@ class PoShell extends Shell {
     function help() {
         $this->out('CakePHP Po Edit');
         $this->hr();
-        $this->out('The Bake script generates controllers, views and models for your application.');
+        $this->out('CakePHP .po File Edit Plugin');
         $this->hr();
         $this->out("Usage: cake po <command> <arg1> <arg2>...");
         $this->hr();
