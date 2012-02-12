@@ -1,30 +1,31 @@
 <?php
+App::uses('Shell', 'Console');
+
 class PoShell extends Shell {
-    var $tasks = array('PoMerge');
+
+    public $tasks = array('Po.PoMerge');
 
     /**
      * startup
      *
-     * @params
      * @return
      */
-    function startup(){
-
+    public function startup(){
+        parent::startup();
     }
 
     /**
      * main
      *
-     * @param
      * @return
      */
-    function main() {
-        $this->out(__('Po Edit', true));
+    public function main() {
+        $this->out(__d('cake_console', 'Po Edit'));
         $this->hr();
-        $this->out(__('[M]erge POT file', true));
-        $this->out(__('[Q]uit', true));
+        $this->out(__d('cake_console', '[M]erge POT file'));
+        $this->out(__d('cake_console', '[Q]uit'));
 
-        $choice = strtoupper($this->in(__('What would you like to do?', true), array('M', 'Q')));
+        $choice = strtoupper($this->in(__d('cake_console', 'What would you like to do?'), array('M', 'Q')));
         switch ($choice) {
         case 'M':
             $this->PoMerge->execute();
@@ -33,7 +34,7 @@ class PoShell extends Shell {
             exit(0);
             break;
         default:
-            $this->out(__('You have made an invalid selection. Please choose a command to execute by entering M or Q.', true));
+            $this->out(__d('cake_console', 'You have made an invalid selection. Please choose a command to execute by entering M or Q.'));
         }
         $this->hr();
         $this->main();
@@ -42,10 +43,9 @@ class PoShell extends Shell {
     /**
      * merge
      *
-     * @param
      * @return
      */
-    function merge(){
+    public function merge(){
         $this->PoMerge->execute();
     }
 
@@ -55,7 +55,7 @@ class PoShell extends Shell {
      * @param
      * @return
      */
-    function help() {
+    public function help() {
         $this->out('CakePHP Po Edit');
         $this->hr();
         $this->out('CakePHP .po File Edit Plugin');
@@ -68,6 +68,5 @@ class PoShell extends Shell {
         $this->out('Commands:');
         $this->out("\n\tpo help\n\t\tshows this help message.");
         $this->out("");
-
     }
   }

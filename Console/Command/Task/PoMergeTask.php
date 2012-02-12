@@ -1,10 +1,19 @@
 <?php
+
+App::uses('AppShell', 'Console/Command');
+
 class PoMergeTask extends Shell{
 
-    var $created = null;
-    var $current = null;
+    public $created = null;
+    public $current = null;
 
-    function execute() {
+    public function execute() {
+
+        if (isset($this->params['root'])) {
+            $root = $this->params['root'];
+        } else {
+            $root = ROOT;
+        }
 
         if (isset($this->params['created'])) {
             $this->created = $this->params['created'];
@@ -13,7 +22,7 @@ class PoMergeTask extends Shell{
             $example = (defined('PO_CREATED')) ? PO_CREATED : 'Q';
             while ($response == '') {
                 $response = $this->in("What is the full path you would like to merge file (created pot file)?\nExample: "
-                                      . ((defined('PO_CREATED')) ? PO_CREATED : $this->params['root'] . DS . "myapp" . DS . "locale" . DS . "default.pot")
+                                      . ((defined('PO_CREATED')) ? PO_CREATED : $root . DS . "app" . DS . "Locale" . DS . "default.pot")
                                       . "\n[Q]uit", null, $example);
                 if (strtoupper($response) === 'Q') {
                     $this->out('Merge Aborted');
@@ -41,7 +50,7 @@ class PoMergeTask extends Shell{
             $example = (defined('PO_CURRENT')) ? PO_CURRENT : 'Q';
             while ($response == '') {
                 $response = $this->in("What is the full path you would like to merge file (current po file)?\nExample: "
-                                      . ((defined('PO_CURRENT')) ? PO_CURRENT : $this->params['root'] . DS . "myapp" . DS . "locale" . DS . "jpn" . DS . "LC_MESSAGES" . DS . "default.po")
+                                      . ((defined('PO_CURRENT')) ? PO_CURRENT : $root . DS . "app" . DS . "Locale" . DS . "jpn" . DS . "LC_MESSAGES" . DS . "default.po")
                                       . "\n[Q]uit", null, $example);
                 if (strtoupper($response) === 'Q') {
                     $this->out('Merge Aborted');
@@ -64,10 +73,9 @@ class PoMergeTask extends Shell{
      * __merge
      * merge
      *
-     * @params
      * @return
      */
-    function __merge(){
+    public function __merge(){
 
         /**
          * created file.
@@ -173,7 +181,7 @@ msgstr ""' . "\n";
         $this->out('Done.');
     }
 
-  }
+}
 
 function cmp($a, $b) {
     if ($a['msgid'] == $b['msgid']) {
