@@ -19,10 +19,11 @@ class PoMergeTask extends Shell{
             $this->created = $this->params['created'];
         } else {
             $response = '';
-            $example = (defined('PO_CREATED')) ? PO_CREATED : 'Q';
+            $default = ((defined('PO_CREATED')) ? PO_CREATED : $root . DS . "app" . DS . "Locale" . DS . "default.pot");
+            $example = ($default) ? $default : 'Q';
             while ($response == '') {
                 $response = $this->in("What is the full path you would like to merge file (created pot file)?\nExample: "
-                                      . ((defined('PO_CREATED')) ? PO_CREATED : $root . DS . "app" . DS . "Locale" . DS . "default.pot")
+                                      . $default
                                       . "\n[Q]uit", null, $example);
                 if (strtoupper($response) === 'Q') {
                     $this->out('Merge Aborted');
@@ -47,10 +48,11 @@ class PoMergeTask extends Shell{
             $this->current = $this->params['current'];
         } else {
             $response = '';
-            $example = (defined('PO_CURRENT')) ? PO_CURRENT : 'Q';
+            $default = ((defined('PO_CURRENT')) ? PO_CURRENT : $root . DS . "app" . DS . "Locale" . DS . "jpn" . DS . "LC_MESSAGES" . DS . "default.po");
+            $example = ($default) ? $default : 'Q';
             while ($response == '') {
                 $response = $this->in("What is the full path you would like to merge file (current po file)?\nExample: "
-                                      . ((defined('PO_CURRENT')) ? PO_CURRENT : $root . DS . "app" . DS . "Locale" . DS . "jpn" . DS . "LC_MESSAGES" . DS . "default.po")
+                                      . $default
                                       . "\n[Q]uit", null, $example);
                 if (strtoupper($response) === 'Q') {
                     $this->out('Merge Aborted');
