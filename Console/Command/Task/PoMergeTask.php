@@ -1,8 +1,9 @@
 <?php
 
 App::uses('AppShell', 'Console/Command');
+App::uses('PoParser', 'Po.Lib');
 
-class PoMergeTask extends Shell{
+class PoMergeTask extends AppShell{
 
     public $created = null;
     public $current = null;
@@ -78,116 +79,10 @@ class PoMergeTask extends Shell{
      * @return
      */
     public function __merge(){
-
-        /**
-         * created file.
-         *
-         */
-        $fp = fopen($this->created,"r");
-
-        $from = array();
-
-        $header = '';
-
-        $current_comment = '';
-        $msgid = '';
-
-        $this->out(sprintf(__('Processing %s...', true), $this->created));
-        if($fp){
-            while(!feof($fp)) {
-                $line = preg_replace('/\n/', '', fgets($fp));
-                if (preg_match('/^(#:.*)$/',$line,$matches)) {
-                    //file comments
-                    $current_comment .= $matches[1] . "\n";
-                } elseif (preg_match('/^msgid "(.*)"$/',$line,$matches)) {
-                    //msgid
-                    $msgid = $matches[1];
-                    $from[$msgid]['msgid'] = $msgid;
-                } elseif (preg_match('/^msgstr "(.*)"$/',$line,$matches)) {
-                    //msgstr
-                    $from[$msgid]['msgstr'] = $matches[1];
-                    $from[$msgid]['comments'] = $current_comment;
-                    $current_comment = '';
-                } elseif (preg_match('/^(".+)$/',$line,$matches)) {
-                    //header
-                    $header .= $matches[1] . "\n";
-                }
-            }
-            fclose($fp);
-        }
-
-        /**
-         * current file.
-         *
-         */
-        $fp = fopen($this->current,"r");
-
-        $into = array();
-
-        $current_comment = '';
-        $msgid = '';
-
-        $this->out(sprintf(__('Processing %s...', true), $this->current));
-        if($fp){
-            while(!feof($fp)) {
-                $line = preg_replace('/\n/', '', fgets($fp));
-                if (preg_match('/^(#:.*)$/',$line,$matches)) {
-                    //file comments
-                    //$current_comment .= $matches[1] . "\n";
-                } elseif (preg_match('/^msgid "(.*)"$/',$line,$matches)) {
-                    //msgid
-                    $msgid = $matches[1];
-                    $into[$msgid]['msgid'] = $msgid;
-                } elseif (preg_match('/^msgstr "(.*)"$/',$line,$matches)) {
-                    //msgstr
-                    $into[$msgid]['msgstr'] = $matches[1];
-                    $into[$msgid]['comments'] = $current_comment;
-                    $current_comment = '';
-                } elseif (preg_match('/^(".+)$/',$line,$matches)) {
-                    //header
-                    //$header .= $matches[1] . "\n";
-                }
-            }
-            fclose($fp);
-        }
-
-        $this->out(__('Merging ...', true));
-        $merged = array_merge($from,$into);
-
-        foreach ($merged as $key => $value) {
-            if (isset($from[$key]['comments'])) {
-                $merged[$key]['comments'] = $from[$key]['comments'];
-            }
-        }
-
-        $out = '';
-        $header_comment = '# LANGUAGE translation of CakePHP Application
-# Copyright YEAR NAME <EMAIL@ADDRESS>
-#
-#, fuzzy
-msgid ""
-msgstr ""' . "\n";
-
-        $out .= $header_comment;
-        $out .= $header;
-        foreach ($merged as $key => $value) {
-            if (!empty($value['msgid'])) {
-                $out .= "\n";
-                $out .= $value['comments'];
-                $out .= 'msgid "' . $value['msgid'] . "\"\n";
-                $out .= 'msgstr "'. $value['msgstr'] . "\"\n";
-            }
-        }
+        $this->out(sprintf(__('Processing %s and %s ...'), $this->created, $this->current));
+        $out = PoParser::mergePoFile($this->created, $this->current);
         $this->createFile($this->current, $out);
-
         $this->out('Done.');
     }
 
-}
-
-function cmp($a, $b) {
-    if ($a['msgid'] == $b['msgid']) {
-        return 0;
-    }
-    return ($a['msgid'] < $b['msgid']) ? -1 : 1;
 }
