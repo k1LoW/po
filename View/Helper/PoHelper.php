@@ -73,7 +73,7 @@ class PoHelper extends AppHelper {
             $js = Cache::read($cacheKey, $this->settings['cacheConfig']);
         }
 
-        if ($js !== '{}') {
+        if ($js === '{}') {
             $searchPaths = App::path('locales');
             $parsed = array();
             foreach ($searchPaths as $directory) {
