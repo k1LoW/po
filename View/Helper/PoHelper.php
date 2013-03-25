@@ -73,23 +73,25 @@ class PoHelper extends AppHelper {
             $js = Cache::read($cacheKey, $this->settings['cacheConfig']);
         }
 
-        $searchPaths = App::path('locales');
-        $parsed = array();
-        foreach ($searchPaths as $directory) {
-            $app = $directory . $lang . DS . 'LC_MESSAGES' . DS;
-            if (file_exists($app . 'default.po')) {
-                $parsed = array_merge(PoParser::parsePoFile($app . 'default.po'), $parsed);
-            }
-        }
-        if (!empty($parsed)) {
-            $filterd = array();
-            foreach ($parsed['contents'] as $key => $value) {
-                if (!empty($value['msgstr'])) {
-                    $filterd[$key] = $value['msgstr'];
+        if ($js !== '{}') {
+            $searchPaths = App::path('locales');
+            $parsed = array();
+            foreach ($searchPaths as $directory) {
+                $app = $directory . $lang . DS . 'LC_MESSAGES' . DS;
+                if (file_exists($app . 'default.po')) {
+                    $parsed = array_merge(PoParser::parsePoFile($app . 'default.po'), $parsed);
                 }
             }
-            $js = json_encode($filterd, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
-            Cache::write($cacheKey, $js, $this->settings['cacheConfig']);
+            if (!empty($parsed)) {
+                $filterd = array();
+                foreach ($parsed['contents'] as $key => $value) {
+                    if (!empty($value['msgstr'])) {
+                        $filterd[$key] = $value['msgstr'];
+                    }
+                }
+                $js = json_encode($filterd, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+                Cache::write($cacheKey, $js, $this->settings['cacheConfig']);
+            }
         }
         $head .= '<script>';
         $head .= 'var po = ' . $js . ';';
