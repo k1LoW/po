@@ -1,1 +1,1 @@
-![po](vendors/img/po.png)
+![po](po.png)
