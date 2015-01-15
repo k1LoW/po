@@ -67,7 +67,7 @@ class PoShell extends Shell {
         $this->hr();
         $this->out('CakePHP .po File Edit Plugin');
         $this->hr();
-        $this->out("Usage: cake po <command> <arg1> <arg2>...");
+        $this->out("Usage: cake Po.po <command> <arg1> <arg2>...");
         $this->hr();
         $this->out('Params:');
         $this->out("\t-created <path> Absolute path to created pot file.\n");
