@@ -35,12 +35,12 @@ class PoGenerateTask extends AppShell{
                 foreach ($fields as $field => $v) {
                     if (empty($pot[$field])) {
                         $pot[$field] = array(
-                            'comments' => '#' . $table . '.' .$field . "\n",
+                            'comments' => '#: ' . $table . '.' .$field . "\n",
                             'msgid' => Inflector::humanize(Inflector::underscore($field)),
                             'msgstr' => '',
                         );
                     } else {
-                        $pot[$field]['comments'] .= '#' . $table . '.' .$field . "\n";
+                        $pot[$field]['comments'] .= '#: ' . $table . '.' .$field . "\n";
                     }
                 }
             }
