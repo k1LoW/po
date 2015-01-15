@@ -42,7 +42,6 @@ class PoParser {
     /**
      * mergePoFile
      *
-     * @param $from, $to
      */
     public static function mergePoFile($fromFilePath, $intoFilePath){
         $from = PoParser::parsePoFile($fromFilePath);
@@ -56,6 +55,14 @@ class PoParser {
             }
         }
 
+        return PoParser::generatePoFile($merged, $from['header']);
+    }
+
+    /**
+     * generatePoFile
+     *
+     */
+    public static function generatePoFile($poArray, $header){
         $out = '';
         $header_comment = '# LANGUAGE translation of CakePHP Application
 # Copyright YEAR NAME <EMAIL@ADDRESS>
@@ -65,8 +72,8 @@ msgid ""
 msgstr ""' . "\n";
 
         $out .= $header_comment;
-        $out .= $from['header'];
-        foreach ($merged as $key => $value) {
+        $out .= $header;
+        foreach ($poArray as $key => $value) {
             if (!empty($value['msgid'])) {
                 $out .= "\n";
                 $out .= $value['comments'];

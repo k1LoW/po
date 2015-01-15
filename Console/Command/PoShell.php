@@ -3,12 +3,11 @@ App::uses('Shell', 'Console');
 
 class PoShell extends Shell {
 
-    public $tasks = array('Po.PoMerge');
+    public $tasks = array('Po.PoMerge', 'Po.PoGenerate');
 
     /**
      * startup
      *
-     * @return
      */
     public function startup(){
         parent::startup();
@@ -17,18 +16,21 @@ class PoShell extends Shell {
     /**
      * main
      *
-     * @return
      */
     public function main() {
         $this->out(__d('cake_console', 'Po Edit'));
         $this->hr();
         $this->out(__d('cake_console', '[M]erge POT file'));
+        $this->out(__d('cake_console', '[G]enerate schema.pot from schema'));
         $this->out(__d('cake_console', '[Q]uit'));
 
-        $choice = strtoupper($this->in(__d('cake_console', 'What would you like to do?'), array('M', 'Q')));
+        $choice = strtoupper($this->in(__d('cake_console', 'What would you like to do?'), array('M', 'G', 'Q')));
         switch ($choice) {
         case 'M':
             $this->PoMerge->execute();
+            break;
+        case 'G':
+            $this->PoGenerate->execute();
             break;
         case 'Q':
             exit(0);
@@ -43,17 +45,22 @@ class PoShell extends Shell {
     /**
      * merge
      *
-     * @return
      */
     public function merge(){
         $this->PoMerge->execute();
     }
 
     /**
+     * generate
+     *
+     */
+    public function generate(){
+        $this->PoGenerate->execute();
+    }
+
+    /**
      * help
      *
-     * @param
-     * @return
      */
     public function help() {
         $this->out('CakePHP Po Edit');
