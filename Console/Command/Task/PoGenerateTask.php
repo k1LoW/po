@@ -32,15 +32,41 @@ class PoGenerateTask extends AppShell{
                 continue;
             }
             foreach ($key as $table => $fields) {
+
+                // Add table name
+                $k = Inflector::humanize($table);
+                if (empty($pot[$k])) {
+                    $pot[$k] = array(
+                        'comments' => '#: ' . $table . "\n",
+                        'msgid' => $k,
+                        'msgstr' => '',
+                    );
+                } else {
+                    $pot[$k]['comments'] .= '#: ' . $table . "\n";
+                }
+
+                $k = Inflector::classify($table);
+                if (empty($pot[$k])) {
+                    $pot[$k] = array(
+                        'comments' => '#: ' . $table . "\n",
+                        'msgid' => $k,
+                        'msgstr' => '',
+                    );
+                } else {
+                    $pot[$k]['comments'] .= '#: ' . $table . "\n";
+                }
+
                 foreach ($fields as $field => $v) {
-                    if (empty($pot[$field])) {
-                        $pot[$field] = array(
+                    // Add field name
+                    $k = Inflector::humanize($field);
+                    if (empty($pot[$k])) {
+                        $pot[$k] = array(
                             'comments' => '#: ' . $table . '.' .$field . "\n",
-                            'msgid' => Inflector::humanize(Inflector::underscore($field)),
+                            'msgid' => $k,
                             'msgstr' => '',
                         );
                     } else {
-                        $pot[$field]['comments'] .= '#: ' . $table . '.' .$field . "\n";
+                        $pot[$k]['comments'] .= '#: ' . $table . '.' .$field . "\n";
                     }
                 }
             }
