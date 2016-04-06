@@ -1,8 +1,11 @@
 {
     "name": "k1low/po",
-    "description": "Po plugin for CakePHP.",
+    "description": "Po plugin for CakePHP 3",
     "type": "cakephp-plugin",
-    "keywords": ["cakephp", "gettext"],
+    "keywords": [
+        "cakephp",
+        "gettext"
+    ],
     "homepage": "https://github.com/k1LoW/po",
     "license": "MIT",
     "authors": [
@@ -13,6 +16,22 @@
         }
     ],
     "require": {
-        "composer/installers": "*"
+        "php": ">=5.4.16",
+        "cakephp/cakephp": "~3.0",
+        "gettext/gettext": "3.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Po\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Po\\Test\\": "tests",
+            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+        }
     }
 }
