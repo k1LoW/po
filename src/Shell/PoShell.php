@@ -2,8 +2,6 @@
 
 namespace Po\Shell;
 
-require_once dirname(__FILE__) . '/../../vendor/autoload.php';
-
 use Cake\Console\Shell;
 
 /**
