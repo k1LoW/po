@@ -34,7 +34,7 @@ class MergeTask extends Shell
             $this->err('The file path you supplied was not found. Please try again.');
             $this->_stop();
         }
-        $default = APP . 'Locale' . DS . 'jpn' . DS . 'LC_MESSAGES' . DS . 'default.po';
+        $default = APP . 'Locale' . DS . 'ja' . DS . 'default.po';
         $response = $this->in("What is the full path you would like to merge file (current po file)?\nExample: "
                               . $default
                               . "\n[Q]uit", null, $default);
