@@ -9,7 +9,7 @@ use Cake\Console\Shell;
  */
 class PoShell extends Shell
 {
-    public $tasks = ['Po.Merge'];
+    public $tasks = ['Po.Merge', 'Po.Schema'];
 
     /**
      * Manage the available sub-commands along with their arguments and help
@@ -23,6 +23,9 @@ class PoShell extends Shell
         $parser = parent::getOptionParser();
         $parser->addSubcommand('merge', [
             'help' => 'Merge po file.',
+        ]);
+        $parser->addSubcommand('schema', [
+            'help' => 'Generate po file from schema.',
         ]);
 
         return $parser;
