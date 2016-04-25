@@ -36,6 +36,7 @@ class SchemaTask extends Shell
             $columns = $collection->describe($table)->columns();
             foreach ($columns as $column) {
                 $translations->insert($table . '.' . $column, Inflector::humanize(Inflector::underscore($column)));
+                $translations->insert($table . '.' . $column, Inflector::humanize(Inflector::underscore(Inflector::singularize($table))) . ' ' . Inflector::humanize(Inflector::underscore($column)));
             }
         }
         $poString = $translations->toPoString();
