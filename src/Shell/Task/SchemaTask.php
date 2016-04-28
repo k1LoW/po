@@ -11,6 +11,7 @@ use Cake\Console\Shell;
 use Cake\Core\Configure;
 use Cake\Filesystem\File;
 use Gettext\Translations;
+use Gettext\Translation;
 
 class SchemaTask extends Shell
 {
@@ -35,8 +36,14 @@ class SchemaTask extends Shell
             $translations->insert($table, Inflector::humanize(Inflector::underscore(Inflector::singularize($table))));
             $columns = $collection->describe($table)->columns();
             foreach ($columns as $column) {
-                $translations->insert($table . '.' . $column, Inflector::humanize(Inflector::underscore($column)));
-                $translations->insert($table . '.' . $column, Inflector::humanize(Inflector::underscore(Inflector::singularize($table))) . ' ' . Inflector::humanize(Inflector::underscore($column)));
+                $c = $collection->describe($table)->column($column);
+                $comment = $c['comment'];
+                $t = new Translation($table . '.' . $column, Inflector::humanize(Inflector::underscore($column)));
+                $translations[] = $t;
+                $t->setTranslation($comment);
+                $t = new Translation($table . '.' . $column, Inflector::humanize(Inflector::underscore(Inflector::singularize($table))) . ' ' . Inflector::humanize(Inflector::underscore($column)));
+                $translations[] = $t;
+                $t->setTranslation($comment);
             }
         }
         $poString = $translations->toPoString();
