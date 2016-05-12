@@ -49,9 +49,9 @@ class MergeTask extends Shell
         }
         $createdTranslations = Translations::fromPoFile($created->path);
         $currentTranslations = Translations::fromPoFile($current->path);
-        
-        $merged = $currentTranslations->mergeWith($createdTranslations);
-        $poString = $translations->toPoString();
+
+        $currentTranslations->mergeWith($createdTranslations);
+        $poString = $currentTranslations->toPoString();
         $this->createFile($current->path, $poString);
     }
 }
