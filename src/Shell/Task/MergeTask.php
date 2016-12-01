@@ -20,8 +20,11 @@ class MergeTask extends Shell
      * main
      *
      */
-    public function main(){
-        $default = APP . 'Locale' . DS . 'default.pot';
+    public function main($domain = ''){
+        if (empty($domain)) {
+        	$domain = 'default';
+        }
+        $default = APP . 'Locale' . DS . $domain . '.pot';
         $response = $this->in("What is the full path you would like to merge file (created pot file)?\nExample:"
                               . $default
                               . "\n[Q]uit", null, $default);
@@ -34,7 +37,7 @@ class MergeTask extends Shell
             $this->err('The file path you supplied was not found. Please try again.');
             $this->_stop();
         }
-        $default = APP . 'Locale' . DS . 'ja' . DS . 'default.po';
+        $default = APP . 'Locale' . DS . 'ja' . DS . $domain .'.po';
         $response = $this->in("What is the full path you would like to merge file (current po file)?\nExample: "
                               . $default
                               . "\n[Q]uit", null, $default);
