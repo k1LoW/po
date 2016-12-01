@@ -20,10 +20,7 @@ class MergeTask extends Shell
      * main
      *
      */
-    public function main($domain = ''){
-        if (empty($domain)) {
-        	$domain = 'default';
-        }
+    public function main($domain = 'default'){
         $default = APP . 'Locale' . DS . $domain . '.pot';
         $response = $this->in("What is the full path you would like to merge file (created pot file)?\nExample:"
                               . $default
