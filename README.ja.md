@@ -8,7 +8,6 @@
 
 ```sh
 $ composer require k1low/po
-$ 
 ```
 
 ## コマンド
